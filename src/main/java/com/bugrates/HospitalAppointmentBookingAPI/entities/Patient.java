@@ -26,7 +26,7 @@ public class Patient {
 	private String lastName;
 	
 	@NotBlank(message = "E-Mail is obligatory")
-	@Column(name="email")
+	@Column(name="email", unique=true)
 	private String email;
 
 	
