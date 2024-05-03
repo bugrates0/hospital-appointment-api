@@ -1,16 +1,20 @@
 package com.bugrates.HospitalAppointmentBookingAPI.entities;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-@Table(name="patients")
+@Table(name="doctors")
 @Entity
-public class Patient {
+public class Doctor {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,21 +30,26 @@ public class Patient {
 	private String lastName;
 	
 	@NotBlank(message = "E-Mail is obligatory")
-	@Column(name="email", unique=true)
+	@Column(name="email")
 	private String email;
 
 	
-	public Patient() {
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="clinic_id", referencedColumnName = "id")
+	private Clinic clinic;
+	
+	public Doctor() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Patient(int id, String firstName, String lastName, String email) {
+	public Doctor(int id, String firstName, String lastName, String email, Clinic clinic) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.clinic = clinic;
 	}
-
+	
 	public int getId() {
 		return id;
 	}
@@ -69,6 +78,14 @@ public class Patient {
 		this.email = email;
 	}
 
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
+	
 	
 	
 	
