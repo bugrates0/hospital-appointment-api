@@ -31,9 +31,6 @@ public class DoctorManager implements DoctorService {
 
 	@Override
 	public void add(@RequestBody @Valid NewDoctorRequest newDoctorRequest) {
-
-		// we will change here later!
-		// gelen stringdeki bosluk vs sil ve oyle dbye gonder
 		
 		Doctor newDoctor = this.modelMapperService.forRequest().map(newDoctorRequest, Doctor.class);
 		

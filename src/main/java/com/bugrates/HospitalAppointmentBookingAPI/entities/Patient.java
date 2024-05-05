@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Table(name="patients")
 @Entity
@@ -17,14 +18,17 @@ public class Patient {
 	@Column(name="id")
 	private int id;
 	
+	@NotNull
 	@NotBlank(message = "First name is obligatory")
 	@Column(name="first_name")
 	private String firstName;
 	
+	@NotNull
 	@NotBlank(message = "Last name is obligatory")
 	@Column(name="last_name")
 	private String lastName;
 	
+	@NotNull
 	@NotBlank(message = "E-Mail is obligatory")
 	@Column(name="email", unique=true)
 	private String email;
