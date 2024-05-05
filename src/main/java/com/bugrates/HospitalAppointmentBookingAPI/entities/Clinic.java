@@ -10,32 +10,34 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Table(name="clinics")
+@Table(name = "clinics")
 @Entity
 public class Clinic {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	private int id;
-	
+
+	@NotNull
 	@NotBlank(message = "Clinic name is obligatory")
-	@Column(name="clinic_name")
+	@Column(name = "clinic_name", unique = true)
 	private String clinicName;
-	
+
 	@OneToMany(mappedBy = "clinic")
 	private List<Doctor> doctors;
-	
+
 	public Clinic() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public Clinic(int id, String clinicName) {
 		this.id = id;
 		this.clinicName = clinicName;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -59,8 +61,5 @@ public class Clinic {
 	public void setDoctors(List<Doctor> doctors) {
 		this.doctors = doctors;
 	}
-
-	
-	
 
 }

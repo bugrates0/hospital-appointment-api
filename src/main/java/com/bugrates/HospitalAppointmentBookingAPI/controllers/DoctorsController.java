@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bugrates.HospitalAppointmentBookingAPI.dataAccess.abstracts.ClinicRepository;
-import com.bugrates.HospitalAppointmentBookingAPI.entities.Clinic;
-import com.bugrates.HospitalAppointmentBookingAPI.entities.Doctor;
+import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.GetAllDoctorsResponse;
+import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.GetByIdDoctorResponse;
+import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.NewDoctorRequest;
 import com.bugrates.HospitalAppointmentBookingAPI.services.abstracts.DoctorService;
 
 @RestController
@@ -31,19 +30,19 @@ public class DoctorsController {
 	
 	@PostMapping()
 	@ResponseStatus(code=HttpStatus.CREATED)
-	public void add(@RequestBody Doctor doctor) {
+	public void add(@RequestBody NewDoctorRequest newDoctorRequest) {
 		
 		
-		this.doctorService.add(doctor);
+		this.doctorService.add(newDoctorRequest);
 	}
 	
 	@GetMapping()
-	public List<Doctor> getAll() {
+	public List<GetAllDoctorsResponse> getAll() {
 		return this.doctorService.getAll();
 	}
 	
 	@GetMapping("/{id}")
-	public Doctor getById(@PathVariable int id) {
+	public GetByIdDoctorResponse getById(@PathVariable int id) {
 		return this.doctorService.getById(id);
 	}
 	
@@ -51,11 +50,11 @@ public class DoctorsController {
 	public void delete(@PathVariable int id) {
 		this.doctorService.delete(id);
 	}
-	
+	/*
 	@PutMapping("/clinics/{clinicId}/doctors/{doctorId}")
 	public void assignClinicToDoctor(@PathVariable int clinicId, @PathVariable int doctorId ) {
 		
 		this.doctorService.assignClinicToDoctor(clinicId, doctorId);
 	}
-	
+	*/
 }
