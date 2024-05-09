@@ -31,29 +31,47 @@ public class PatientManager implements PatientService {
 	}
 	
 	@Override
-	public void add(NewPatientRequest newPatientRequest) {
+	public void add(NewPatientRequest newPatientRequest) throws Exception{
 		
-		Patient newPatient = this.modelMapperService.forRequest().map(newPatientRequest, Patient.class);
+		if(this.patientRepository.existsByEmail(newPatientRequest.getEmail()) == false) {
+			Patient newPatient = this.modelMapperService.forRequest().map(newPatientRequest, Patient.class);
+			this.patientRepository.save(newPatient);
+		}else {
+			throw new Exception("E-Mail already exits!");
+		}
 		
-		this.patientRepository.save(newPatient);
+		
+		
 	}
 
 	@Override
-	public GetByIdPatientResponse getById(int id) {
+	public GetByIdPatientResponse getById(int id) throws Exception {
 		
-		Patient patient = this.patientRepository.findById(id).get();
+		if(this.patientRepository.existsById(id) == true) {
+			Patient patient = this.patientRepository.findById(id).get();
+			
+			GetByIdPatientResponse patientResponse = this.modelMapperService.forResponse().map(patient, GetByIdPatientResponse.class);
+			
+			return patientResponse;
+		}else {
+			throw new Exception("No patient with this ID !");
+		}
 		
-		GetByIdPatientResponse patientResponse = this.modelMapperService.forResponse().map(patient, GetByIdPatientResponse.class);
 		
-		return patientResponse;
+		
+		
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(int id) throws Exception {
+		if(this.patientRepository.existsById(id) == true) {
+			Patient patient = this.patientRepository.findById(id).get();
+			
+			this.patientRepository.delete(patient);
+		}else {
+			throw new Exception("No patient with this ID !");
+		}
 		
-		Patient patient = this.patientRepository.findById(id).get();
-		
-		this.patientRepository.delete(patient);
 		
 	}
 
