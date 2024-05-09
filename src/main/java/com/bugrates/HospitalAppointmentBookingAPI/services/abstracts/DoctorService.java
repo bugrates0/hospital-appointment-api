@@ -9,14 +9,13 @@ import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.
 
 public interface DoctorService {
 	
-	public void add(NewDoctorRequest newDoctorRequest);
+	public void add(NewDoctorRequest newDoctorRequest) throws Exception;
 	
 	public List<GetAllDoctorsResponse> getAll();
 	
-	public GetByIdDoctorResponse getById(int id);
+	public GetByIdDoctorResponse getById(int id) throws Exception;
 	
-	public void delete(int id);
+	public void delete(int id) throws Exception;
 	
-	//public void assignClinicToDoctor(int clinicId, int doctorId);
 
 }

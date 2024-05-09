@@ -48,15 +48,13 @@ public class PatientsController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<GetByIdPatientResponse> getById(@PathVariable int id) {
-		
+	public ResponseEntity<GetByIdPatientResponse> getById(@PathVariable int id) {	
 		try {
 			return ResponseEntity.ok(patientService.getById(id));
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
-		
-	
+
 	}
 	
 	@DeleteMapping("/{id}")

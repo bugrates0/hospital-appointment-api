@@ -12,7 +12,9 @@ import com.bugrates.HospitalAppointmentBookingAPI.dataAccess.abstracts.DoctorRep
 import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.GetAllDoctorsResponse;
 import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.GetByIdDoctorResponse;
 import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.DoctorDTO.NewDoctorRequest;
+import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.PatientDTO.GetByIdPatientResponse;
 import com.bugrates.HospitalAppointmentBookingAPI.entities.Doctor;
+import com.bugrates.HospitalAppointmentBookingAPI.entities.Patient;
 import com.bugrates.HospitalAppointmentBookingAPI.services.abstracts.DoctorService;
 
 import jakarta.validation.Valid;
@@ -30,11 +32,14 @@ public class DoctorManager implements DoctorService {
 	}
 
 	@Override
-	public void add(@RequestBody @Valid NewDoctorRequest newDoctorRequest) {
+	public void add(@RequestBody @Valid NewDoctorRequest newDoctorRequest) throws Exception{
 		
-		Doctor newDoctor = this.modelMapperService.forRequest().map(newDoctorRequest, Doctor.class);
-		
-		this.doctorRepository.save(newDoctor);
+		if(this.doctorRepository.existsByEmail(newDoctorRequest.getEmail()) == false) {
+			Doctor newDoctor = this.modelMapperService.forRequest().map(newDoctorRequest, Doctor.class);
+			this.doctorRepository.save(newDoctor);
+		}else {
+			throw new Exception("E-Mail already exits!");
+		}
 
 	}
 
@@ -49,21 +54,33 @@ public class DoctorManager implements DoctorService {
 	}
 
 	@Override
-	public GetByIdDoctorResponse getById(int id) {
+	public GetByIdDoctorResponse getById(int id) throws Exception {
 		
-		Doctor doctor = this.doctorRepository.findById(id).get();
-		
-		GetByIdDoctorResponse doctorResponse = this.modelMapperService.forDoctorDetailedResponse().map(doctor, GetByIdDoctorResponse.class);
-		
-		return doctorResponse;
+		if(this.doctorRepository.existsById(id) == true) {
+			Doctor doctor = this.doctorRepository.findById(id).get();
+			
+			GetByIdDoctorResponse doctorResponse = this.modelMapperService.forDoctorDetailedResponse().map(doctor, GetByIdDoctorResponse.class);
+			
+			return doctorResponse;
+		}else {
+			throw new Exception("No doctor with this ID !");
+		}
+
 	}
 	
 	@Override
-	public void delete(int id) {
+	public void delete(int id) throws Exception {
 		
-		Doctor doctor = this.doctorRepository.findById(id).get();
+		if(this.doctorRepository.existsById(id) == true) {
+			Doctor doctor = this.doctorRepository.findById(id).get();
+			
+			this.doctorRepository.delete(doctor);
+		}else {
+			throw new Exception("No doctor with this ID !");
+		}
 		
-		this.doctorRepository.delete(doctor);
+		
+		
 	}
 
 }

@@ -3,6 +3,7 @@ package com.bugrates.HospitalAppointmentBookingAPI.controllers;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,11 +30,14 @@ public class DoctorsController {
 	}
 	
 	@PostMapping()
-	@ResponseStatus(code=HttpStatus.CREATED)
-	public void add(@RequestBody NewDoctorRequest newDoctorRequest) {
+	public ResponseEntity<String> add(@RequestBody NewDoctorRequest newDoctorRequest) {
 		
-		
-		this.doctorService.add(newDoctorRequest);
+		try {
+			this.doctorService.add(newDoctorRequest);
+			return ResponseEntity.status(HttpStatus.CREATED).body("New doctor account has been successfully created.");
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't created: " + e.getMessage());
+		}
 	}
 	
 	@GetMapping()
@@ -42,19 +46,25 @@ public class DoctorsController {
 	}
 	
 	@GetMapping("/{id}")
-	public GetByIdDoctorResponse getById(@PathVariable int id) {
-		return this.doctorService.getById(id);
+	public ResponseEntity<GetByIdDoctorResponse> getById(@PathVariable int id) {
+		
+		try {
+			return ResponseEntity.ok(this.doctorService.getById(id));
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+		
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable int id) {
-		this.doctorService.delete(id);
-	}
-	/*
-	@PutMapping("/clinics/{clinicId}/doctors/{doctorId}")
-	public void assignClinicToDoctor(@PathVariable int clinicId, @PathVariable int doctorId ) {
+	public ResponseEntity<String> delete(@PathVariable int id) {
 		
-		this.doctorService.assignClinicToDoctor(clinicId, doctorId);
+		try {
+			this.doctorService.delete(id);
+			return ResponseEntity.ok("Doctor's account has been deleted.");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Couldn't deleted !");
+		}
+
 	}
-	*/
 }
