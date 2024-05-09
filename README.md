@@ -1,6 +1,6 @@
 # <h1 align="center"> :hospital: **HospitalAppointmentAPI** :ambulance: </h1>
 
- ###     Bu uygulama, hastaların doktor randevusu alabilmelerini sağlayan bir backend arayüzü sağlar. Hastaların ve doktorların sisteme kaydedilerek belirli tarih ve saatlerde randevular oluşturulabilmesi esasına dayanır.
+ ###     Bu uygulama, hastaların doktor randevusu alabilmelerini sağlayan bir backend arayüzü projesidir. Hastaların ve doktorların sisteme kaydedilerek belirli tarih ve saatlerde randevular oluşturulabilmesi esasına dayanır.
 
 
 
