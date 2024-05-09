@@ -113,6 +113,7 @@ Bu proje RESTful prensipleri ve katmanlı mimari tasarım desenini baz alan bir 
 
 > [!TIP]
 > Yeni randevu oluşturulmak istendiğinde aşağıdaki enum classlarına uygun şekilde tarih ve saat seçimi gerçekleştirilmelidir.
+> 
 > <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/672d8e30-81dc-45ae-90f3-319ab774ad57" alt="Açıklama" width="500">
 > <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/9888bbb8-f312-4c6a-b47f-8cc7292f853e" alt="Açıklama" width="500">
 ___
