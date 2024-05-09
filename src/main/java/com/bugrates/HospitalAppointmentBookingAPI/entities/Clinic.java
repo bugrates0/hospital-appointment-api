@@ -33,9 +33,10 @@ public class Clinic {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Clinic(int id, String clinicName) {
+	public Clinic(int id, String clinicName, List<Doctor> doctors) {
 		this.id = id;
 		this.clinicName = clinicName;
+		this.doctors = doctors;
 	}
 
 	public int getId() {

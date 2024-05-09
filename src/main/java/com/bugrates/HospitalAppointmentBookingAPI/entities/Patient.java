@@ -1,10 +1,13 @@
 package com.bugrates.HospitalAppointmentBookingAPI.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,17 +35,21 @@ public class Patient {
 	@NotBlank(message = "E-Mail is obligatory")
 	@Column(name="email", unique=true)
 	private String email;
+	
+	@OneToMany(mappedBy = "patient")
+	private List<Appointment> appointments;
 
 	
 	public Patient() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Patient(int id, String firstName, String lastName, String email) {
+	public Patient(int id, String firstName, String lastName, String email, List<Appointment> appointments) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.appointments = appointments;
 	}
 
 	public int getId() {
@@ -71,6 +78,14 @@ public class Patient {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
 	}
 
 	

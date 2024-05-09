@@ -26,7 +26,6 @@ public class ClinicsController {
 	}
 	
 	@PostMapping()
-	@ResponseStatus(code=HttpStatus.CREATED)
 	public void add(@RequestBody NewClinicRequest newClinicRequest) {
 		
 		

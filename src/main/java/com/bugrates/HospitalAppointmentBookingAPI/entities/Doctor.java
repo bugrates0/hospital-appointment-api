@@ -2,6 +2,8 @@ package com.bugrates.HospitalAppointmentBookingAPI.entities;
 
 
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -43,16 +46,19 @@ public class Doctor {
 	@JoinColumn(name="clinic_id", referencedColumnName = "id", nullable = false)
 	private Clinic clinic;
 	
+	@OneToMany(mappedBy = "doctor")
+	private List<Appointment> appointments;
+	
 	public Doctor() {
-		// TODO Auto-generated constructor stub
 	}
 	
-	public Doctor(int id, String firstName, String lastName, String email, Clinic clinic) {
+	public Doctor(int id, String firstName, String lastName, String email, Clinic clinic, List<Appointment> appointments) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.clinic = clinic;
+		this.appointments = appointments;
 	}
 	
 	public int getId() {
@@ -89,6 +95,14 @@ public class Doctor {
 
 	public void setClinic(Clinic clinic) {
 		this.clinic = clinic;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
 	}
 	
 	
