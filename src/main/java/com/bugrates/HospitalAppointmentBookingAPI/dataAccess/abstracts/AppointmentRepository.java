@@ -1,4 +1,7 @@
+
 package com.bugrates.HospitalAppointmentBookingAPI.dataAccess.abstracts;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +17,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	@Query(value = "SELECT * FROM appointments WHERE patient_id = :patient_id AND appointment_date = :appointment_date AND appointment_time = :appointment_time", nativeQuery = true)
 	public Appointment getAppointmentAlreadyExistsOfPatient(@Param("patient_id")int patientId, @Param("appointment_date")String date, @Param("appointment_time")String time);
 
+	@Query(value = "SELECT * FROM appointments WHERE doctor_id = :doctor_id AND appointment_date = :appointment_date", nativeQuery = true)
+	public List<Appointment> getAllAppointmentsOfDay(@Param("appointment_date")String date, @Param("doctor_id")int doctorId);
+	
+	@Query(value = "SELECT * FROM appointments WHERE patient_id = :patient_id AND appointment_date >= :appointment_date", nativeQuery = true)
+	public List<Appointment> getAllMyFutureAppointments(@Param("appointment_date")String date, @Param("patient_id")int patientId);
 	
 }

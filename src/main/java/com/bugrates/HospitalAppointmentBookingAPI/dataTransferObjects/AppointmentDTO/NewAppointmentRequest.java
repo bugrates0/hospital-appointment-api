@@ -17,19 +17,15 @@ public class NewAppointmentRequest {
 	@NotBlank 
 	private int doctorId;
 	
-	@NotNull
-	@NotBlank 
-	private int patientId;
 	
 	public NewAppointmentRequest() {
 		
 	}
 
-	public NewAppointmentRequest(String appointmentDate, String appointmentTime, int doctorId, int patientId) {
+	public NewAppointmentRequest(String appointmentDate, String appointmentTime, int doctorId) {
 		this.appointmentDate = appointmentDate;
 		this.appointmentTime = appointmentTime;
 		this.doctorId = doctorId;
-		this.patientId = patientId;
 	}
 
 	public String getAppointmentDate() {
@@ -43,12 +39,6 @@ public class NewAppointmentRequest {
 	public int getDoctorId() {
 		return doctorId;
 	}
-
-	public int getPatientId() {
-		return patientId;
-	}
-	
-	
 	
 	
 }

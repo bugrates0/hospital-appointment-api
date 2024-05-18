@@ -10,5 +10,8 @@ public interface ModelMapperService {
 	
 	ModelMapper forDoctorsDetailedResponse(); // GetAllDoctorsResponse
 	
-	ModelMapper forDoctorDetailedResponse(); // GetByIdDoctorResponse
+	ModelMapper forAppointmentDetailsOfDayResponse(); // AppointmentDetailsOfDayResponse
+	
+	ModelMapper forAppointmentDetailsForPatientResponse();
+	
 }

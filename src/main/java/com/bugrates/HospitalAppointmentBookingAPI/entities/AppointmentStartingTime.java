@@ -1,6 +1,10 @@
 package com.bugrates.HospitalAppointmentBookingAPI.entities;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bugrates.HospitalAppointmentBookingAPI.dataTransferObjects.AppointmentDTO.AppointmentDetailsOfDayResponse;
 
 
 public enum AppointmentStartingTime {
@@ -24,7 +28,6 @@ public enum AppointmentStartingTime {
 
 	private AppointmentStartingTime(LocalTime localTime) {
 		this.localTime = localTime;
-		
 	}
 
     public LocalTime getTime() {
@@ -43,5 +46,18 @@ public enum AppointmentStartingTime {
     	return false;
     }
     
+    public static List<AppointmentDetailsOfDayResponse> getAppointmentAvailabilityOfDay(){
+    	
+    	List<AppointmentDetailsOfDayResponse> appointmentDetails = new ArrayList<AppointmentDetailsOfDayResponse>();
+    	
+    	for(AppointmentStartingTime time: AppointmentStartingTime.values()) {
+    		AppointmentDetailsOfDayResponse appointmentDetailsOfDayResponse = new AppointmentDetailsOfDayResponse();
+    		appointmentDetailsOfDayResponse.setAppointmentTime(time.getTime());
+    		appointmentDetailsOfDayResponse.setAppointmentStatus("AVAILABLE"); //TODO change with enum
+    		appointmentDetails.add(appointmentDetailsOfDayResponse);
+    	}
+    	
+    	return appointmentDetails;
+    }
 
 }

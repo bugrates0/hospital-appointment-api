@@ -2,6 +2,7 @@ package com.bugrates.HospitalAppointmentBookingAPI.entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,19 +36,19 @@ public class Appointment {
 	
 	@ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", nullable = false)
-	private Doctor doctor;
+	private User doctor;
 	
 	@ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id", nullable = false)
-	private Patient patient;
-	
+	private User patient;
+
 	
 	public Appointment() {
 		
 	}
 
 
-	public Appointment(int id,LocalDate appointmentDate, LocalTime appointmentTime, Doctor doctor, Patient patient) {
+	public Appointment(int id,LocalDate appointmentDate, LocalTime appointmentTime, Doctor doctor, User patient) {
 		this.id = id;
 		this.appointmentDate = appointmentDate;
 		this.appointmentTime = appointmentTime;
@@ -80,25 +81,39 @@ public class Appointment {
 	}
 
 
-	public Doctor getDoctor() {
+	public User getDoctor() {
 		return doctor;
 	}
 
 
-	public void setDoctor(Doctor doctor) {
+	public void setDoctor(User doctor) {
 		this.doctor = doctor;
 	}
 
 
-	public Patient getPatient() {
+	public User getPatient() {
 		return patient;
 	}
 
 
-	public void setPatient(Patient patient) {
+	public void setPatient(User patient) {
 		this.patient = patient;
 	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public String getFormattedAppointmentDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return appointmentDate.format(formatter);
+    }
 	
-	
+	public String getFormattedAppointmentTime() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return appointmentTime.format(formatter);
+    }
 	
 }
