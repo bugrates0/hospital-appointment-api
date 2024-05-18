@@ -9,6 +9,7 @@ ___
 
 - #### **Framework:**  <img alt="Spring Boot" src="https://img.shields.io/badge/Spring Boot-3.2.3-brightgreen.svg" />
     + Spring Data JPA
+    + Spring Security
     + Spring Validation
     + Spring DevTools
     + Spring Test
@@ -25,12 +26,11 @@ ___
 ## :bulb: Teknik Ayrıntılar :mag:
 Bu proje RESTful prensipleri ve katmanlı mimari tasarım desenini baz alan bir REST API'dır. Günümüzde sağlık başta olmak üzere birçok sektörde kullanılan online randevu-rezervasyon sistemlerinden esinlenilerek geliştirilmiştir.
 
-<img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/6f49d7f6-40f5-4083-9159-0c3fa322462b" alt="Açıklama" width="300">
+<img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/bc01622b-80b0-4e39-bfc2-14f132e442cc" alt="Açıklama" width="300">
 
 
-
-- ### Temel Varlıklar: <kbd>Klinik</kbd> <kbd>Doktor</kbd> <kbd>Hasta</kbd> <kbd>Randevu</kbd>
-    + Bir hastanede pek çok klinik ve bu kliniklere bağlı olarak çalışan doktorlar bulunur. Bu projede de öncelikle hastanede hangi kliniklerin bulunacağı ve bu kliniklere bağlı olarak hangi doktorların çalışacağı belirlenir ve veritabanına eklenir. Daha sonrasında doktorlardan randevu alacak olan hastalar sisteme kaydolur/kaydedilir. Son olaraksa hastalara doktorların çalıştığı gün ve saatlere uygun olarak belirledikleri zaman için randevu verilir.
+- ### Temel Varlıklar: <kbd>Admin</kbd> <kbd>Klinik</kbd> <kbd>Doktor</kbd> <kbd>Hasta</kbd> <kbd>Randevu</kbd>
+    + Bir hastanede pek çok klinik ve bu kliniklere bağlı olarak çalışan doktorlar bulunur. Bu projede de öncelikle hastanede hangi kliniklerin bulunacağı ve bu kliniklere bağlı olarak hangi doktorların çalışacağı belirlenir ve veritabanına eklenir. Daha sonrasında doktorlardan randevu alacak olan hastalar sisteme kaydolur. Hastalar, doktorların çalıştığı gün ve saatlere uygun olarak belirledikleri zaman için randevu alırlar.
 
 - ### Veritabanı Tasarımı
     + **Klinikler Tablosu**
@@ -41,26 +41,21 @@ Bu proje RESTful prensipleri ve katmanlı mimari tasarım desenini baz alan bir 
   | id    | INT          | Benzersiz klinik numarası |
   | clinic_name  | VARCHAR(255) | Klinik ismi         |
 
-  + **Doktorlar Tablosu**
+  + **Kullanıcılar Tablosu**
      <br/><br/>
       
    | Sütun İsmi | Veri Tipi    | Açıklama                |
    | ----------- | ------------ | --------------------------- |
-   | id    | INT | Benzersiz doktor numarası |
-   | email  | VARCHAR(255) | Benzersiz doktor maili  |
-   | first_name    | VARCHAR(255)| Doktor adı |
-   | last_name  | VARCHAR(255) | Doktor soyadı |
-   | clinic_id  | INT | Bağlı bulunduğu klinik numarası |
+   | dtype    | VARCHAR(31) | Eklenen kullanıcının ait olduğu sınıf |
+   | id    | INT | Benzersiz kullanıcı numarası |
+   | email  | VARCHAR(255) | Benzersiz kullanıcı maili  |
+   | first_name    | VARCHAR(255)| Kullanıcı ismi |
+   | last_name  | VARCHAR(255) | Kullanıcı soyadı |
+   | password  | VARCHAR(255) | Kullanıcının şifresi |
+   | role  | VARCHAR(255) | Kullanıcının sistemdeki rolü |
+   | clinic_id  | INT | Kullanıcı eğer doktorsa bağlı olduğu klinik numarası |
 
-  + **Hastalar Tablosu**
-     <br/><br/>
-      
-  | Sütun İsmi | Veri Tipi    | Açıklama                |
-  | ----------- | ------------ | --------------------------- |
-  | id    | INT | Benzersiz hasta numarası |
-  | email  | VARCHAR(255) | Benzersiz hasta maili |
-  | first_name    | VARCHAR(255)| Hasta adı |
-  | last_name  | VARCHAR(255) | Hasta soyadı |
+  
   
   + **Randevular Tablosu**
      <br/><br/>
@@ -73,40 +68,75 @@ Bu proje RESTful prensipleri ve katmanlı mimari tasarım desenini baz alan bir 
   | doctor_id    | INT | Randevu alınan doktor numarası |
   | patient_id  | INT | Randevu alan hasta numarası |
 
-- ### REST API Uç noktaları (Endpoints)
-    + **Klinik Yönetimi**
-      + Yeni klinik oluşturma <kbd>POST /api/clinics</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/64e072fb-a86d-49e9-a4cf-4052399f7a43" alt="Açıklama" width="500">
-        
-      + Mevcut tüm klinikleri ve kliniklere bağlı doktorları listeleme <kbd>GET /api/clinics</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/d35e8be3-3d26-4d19-ba25-dcc1214c5d98" alt="Açıklama" width="500">
+- ### REST API Uç Noktaları (Endpoints) ve Kullanım Akışı
+
+  
+> [!NOTE]
+> Bu kısımda uygulamanın kullanımına dair ayrıntılar Postman Mock Service'den alınmış test ve ekran görüntüleriyle anlatılacaktır.
+> Endpointlere istek gönderilmeden önce gerekli kimlik doğrulama bilgileri aşağıdaki gibi girilmelidir. Endpointlerin yetkilendirilme işlemi roller (Hasta, Doktor, Admin) üzerinden gerçekleştirilmektedir.
+> ![authentication](https://github.com/bugrates0/hospital-appointment-api/assets/127054766/718b9daa-cdd4-482d-8696-4e8ccd2ced44)
 
 
 
-    + **Doktor Yönetimi**
-      + Yeni doktor kaydı <kbd>POST /api/doctors</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/1de22f7a-9c0d-4b9d-80de-254606e2baa1" alt="Açıklama" width="500">
+    
+   + Uygulama başlatıldığında veritabanına hazır olarak bir Admin kullanıcısı eklenir. Admin kullanıcıları, bu online randevu sistemini ayarlayacak ve kontrol edecek kişilerdir. İlk olarak sisteme kullanım senaryosuna göre gerekli klinikler eklenmelidir.
+ 
+      <kbd>POST /api/admin/clinics</kbd>
       
-      + ID'ye göre doktor listeleme <kbd>GET /api/doctors/{doctorId}</kbd>
-      + Mevcut bir doktoru silme  <kbd>DELETE /api/doctors/{doctorId}</kbd>
-      + Mevcut tüm doktorları listeleme <kbd>GET /api/doctors</kbd>
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/29c481a3-4414-429b-a9fd-0d77631ecf57" alt="Açıklama" width="500">
+    
 
-
-    + **Hasta Yönetimi**
-      + Yeni hasta kaydı <kbd>POST /api/patients</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/315fb576-b96f-42b5-958f-20481df278b0" alt="Açıklama" width="500">
       
-      + ID'ye göre hasta listeleme <kbd>GET /api/patients/{patientId}</kbd>
-      + Mevcut bir hastayı silme  <kbd>DELETE /api/patients/{patientId}</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/bdfea5ae-c624-40a5-83e3-68863b17fa00" alt="Açıklama" width="500">
+
+   + Yine adminler tarafından, bu kliniklere bağlı olarak çalışacak olan doktorların hesapları sisteme kaydedilir.
+
+     <kbd>POST /api/register/doctor</kbd>
       
-      + Mevcut tüm hastaları listeleme <kbd>GET /api/patients</kbd>
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/6f0ef5ae-03e9-48dd-9436-8bf3a4e374db" alt="Açıklama" width="500">
 
 
-    + **Randevu Yönetimi**
-      + Yeni randevu kaydı <kbd>POST /api/appointments</kbd>
-      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/39410f91-64b8-48e7-82d4-0d2a7b965e4a" alt="Açıklama" width="500">
-<br/><br/>
+   + Randevu almak isteyen hastalar öncelikle sisteme kaydolurlar.
+     
+       <kbd>POST /api/register</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/20075a59-6bea-4f90-bf56-5319af529ce8" alt="Açıklama" width="500">
+
+
+   + Hastalar, kayıtlı klinikleri ve bu kliniklere bağlı çalışan doktorları öğrenirler.
+     
+       <kbd>GET /api/clinics</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/53a1a1fb-e81a-4032-836e-e402916beab1" alt="Açıklama" width="500">
+
+   + Randevu almak istedikleri doktoru belirledikten sonra randevu günü boş olan saatleri öğrenirler.
+     
+       <kbd>GET /api/appointments/{doctorId}/{appointmentDate}</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/fbb07828-f627-4e73-9d30-879b17122009" alt="Açıklama" width="500">
+
+      
+  + Uygun olan gün ve saati seçerek randevu alırlar.
+
+
+       <kbd>POST /api/appointments</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/74a50185-c72e-48cf-a3d2-9429f135a085" alt="Açıklama" width="500">
+
+
+  + Hastalar aldıkları randevuları görebilirler.
+
+      <kbd>GET /api/appointments</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/c94e9df5-ad58-4d90-9041-cd8e784c5b29" alt="Açıklama" width="500">
+
+
+ + Vazgeçtikleri randevuları iptal edebilirler.
+    
+     <kbd>DELETE /api/appointments/{appointmentId}</kbd>
+      
+      <img src="https://github.com/bugrates0/hospital-appointment-api/assets/127054766/ca8f7a2e-e987-4851-a8b7-389520e73424" alt="Açıklama" width="500">
+
++ Bu temel özellikler dışında doktorlar sistemde hangi saatlerde hasta muayenesine gireceklerini görebilmektedir.
 
 > [!CAUTION]
 > Silme işlemlerinde, eğer silinmeye çalışılan veri başka bir tabloyla bağlantılıysa silinemeyecektir! (Foreign keys)
@@ -119,9 +149,8 @@ Bu proje RESTful prensipleri ve katmanlı mimari tasarım desenini baz alan bir 
 ___
 
 ## :soon: Eklenecek Özellikler :clock5:
-  + Randevu iptal etme, boş randevu saatlerini görme, admin kullanıcı vb. kontrollerini sağlayacak daha fazla endpoint
   + Gelişmiş hata yönetimi
   + Veri girişinde RegEx kontrolü
-  + Kimlik doğrulama ve yetkilendirme
-  + API güvenliği
+  + Randevu alma/iptal etme işlemlerini admin kullanıcısı tarafından da yapabilme
+
 
